@@ -97,9 +97,6 @@ def split_stratified_validation_workflows(
     if validation_count == 1:
         validation_indices = {len(ordered) // 2}
     else:
-        # Calibration already reserves the smallest production instance of
-        # each family. Keep the next smallest item in training, and start the
-        # size-spanning validation set at the second remaining item.
         validation_indices = {1, len(ordered) - 1}
         if validation_count > 2:
             validation_indices.update(

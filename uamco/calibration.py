@@ -467,10 +467,6 @@ class FrozenObjectiveBounds:
             raise ValueError("frozen objective provenance must be a lowercase SHA-256")
 
     def normalize_time(self, value_s: float) -> float:
-        # Zero is the physical origin.  The frozen calibration maximum is a
-        # scale/cap, not a target: values below the observed calibration
-        # minimum must retain a non-zero slope so that further improvements
-        # are still rewarded.
         normalized = float(value_s) / self.time_max_s
         return min(1.0, max(0.0, normalized))
 

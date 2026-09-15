@@ -4264,9 +4264,6 @@ class FormalExperimentRunner:
         episode_count = int(self.config["evaluation"]["sensitivity_episodes"])
         records: list[dict] = []
         scenario = self.config["scenario"]
-        # Workflow membership is part of the preregistered nominal benchmark.
-        # A scalability condition may change completion outcomes, but it must
-        # not silently add or remove DAGs from the evaluation cohort.
         workflow_feasibility_config = copy.deepcopy(self.config)
         if self.policy is not None:
             self.policy.eval()

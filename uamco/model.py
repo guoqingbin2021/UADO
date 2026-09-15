@@ -227,15 +227,6 @@ class HierarchicalConstrainedPolicy(nn.Module):
                 local = executor_features[..., 0]
                 remote = executor_features[..., 1] + executor_features[..., 2]
                 defer = executor_features[..., 3]
-                # The residual prior expresses the causal contract, not a
-                # generic "fastest server" heuristic.  A remote executor is
-                # attractive only when the currently missing predecessor
-                # results can be delivered in the forecast contact window.
-                # The same rule applies when a nominally local action still
-                # needs predecessor results currently held by infrastructure;
-                # otherwise a long DAG can strand an entire successor chain at
-                # its owner after the RSU contact has ended.  An infeasible
-                # forecast remains a soft penalty, so pause/resume is legal.
                 delivery_safety = remote * (
                     8.0 * feasible - 4.0 + 2.0 * margin
                 ) + local * (1.0 - feasible) * (

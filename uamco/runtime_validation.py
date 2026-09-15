@@ -51,9 +51,9 @@ class RuntimeTraceValidator:
     def _required_inputs(event: Mapping[str, object]) -> tuple[Mapping[str, object], ...]:
         canonical = event.get("required_inputs")
         if canonical is not None:
-            return tuple(canonical)  # type: ignore[arg-type]
+            return tuple(canonical)
         normalized = []
-        for required in event.get("required_input_files", ()):  # type: ignore[misc]
+        for required in event.get("required_input_files", ()):
             if isinstance(required, str):
                 normalized.append({"file_id": required})
             else:

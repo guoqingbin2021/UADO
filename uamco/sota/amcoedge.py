@@ -169,8 +169,6 @@ class AMCoEdgeRuntime:
                 local_fraction = 1.0 / variable
             local_fraction /= local_fraction.sum()
         else:
-            # Official HECWA product-of-other-service-times, written in the
-            # equivalent and numerically safer reciprocal form.
             local_fraction = 1.0 / variable
             local_fraction /= local_fraction.sum()
         result = np.zeros(self.action_count, dtype=np.float64)

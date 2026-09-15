@@ -102,8 +102,6 @@ class _FeedbackDiffusionActor(nn.Module):
         return mean + nonzero * torch.exp(0.5 * log_variance) * noise
 
     def forward(self, state: torch.Tensor, latent: torch.Tensor, *, deterministic: bool = False) -> torch.Tensor:
-        # FDEdge uses the previous action probabilities as feedback only to set
-        # shape/device, then starts the new reverse chain from Gaussian noise.
         current = torch.zeros_like(latent) if deterministic else torch.randn_like(latent)
         for index in reversed(range(self.n_timesteps)):
             time = torch.full((state.shape[0],), index, device=state.device, dtype=torch.long)

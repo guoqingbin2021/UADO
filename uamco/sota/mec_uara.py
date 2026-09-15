@@ -105,8 +105,6 @@ class MECUARARuntime:
             np.asarray(observation.executor_cpu_hz, dtype=np.float64)[remote], 1.0e-12
         )
         rate = np.asarray(observation.link_rate_bps, dtype=np.float64)[remote]
-        # Preserve the official R = B log2(1 + SNR), deriving SNR from the
-        # simulator's already-computed rate instead of inventing channel state.
         snr = np.asarray(
             [max(0.0, math.exp2(value / physical_context.bandwidth_hz) - 1.0) for value in rate]
         )
@@ -115,8 +113,6 @@ class MECUARARuntime:
         communication_load = float(observation.input_bytes) * 8.0
         compute_load = float(observation.cycles)
         local_cpu = max(float(observation.executor_cpu_hz[0]), 1.0e-12)
-        # The pinned implementation defines battery capacity in Wh, whereas
-        # the common simulator accounts energy in joules.
         remaining_battery_wh = max(
             float(observation.remaining_energy_j[0]) / 3600.0, 1.0e-12
         )

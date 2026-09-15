@@ -298,10 +298,6 @@ def build_graph_observation(
             for child_id in state.instance.tasks[task_id].children
         )
         if enable_causal_contact_features and feeds_high_fan_in_sink:
-            # Remote parallelism is retained only when the predicted contact
-            # covers input, queued compute, task compute, and proactive result
-            # return plus one complete micro-slot of robustness margin.
-            # Otherwise local execution is the causally safe action.
             minimum_return_margin = (
                 env.micro_slot_s / max(env.macro_interval_s, env.micro_slot_s)
             )
@@ -315,9 +311,6 @@ def build_graph_observation(
                     infrastructure_mask,
                 )
             ]
-        # Forecasts are soft risk signals. Transfers may pause and resume
-        # across contacts, and remote compute continues after upload, so a
-        # single predicted window must not redefine action legality.
         local_allowed = bool(raw_mask[state.owner_ugv])
         defer_allowed = bool(raw_mask["defer"])
         if (
@@ -325,12 +318,6 @@ def build_graph_observation(
             and not state.instance.tasks[task_id].children
             and local_allowed
         ):
-            # Once every predecessor result has really arrived, a ready sink
-            # has no remaining dependency reason to wait.  Keeping ``defer``
-            # legal here allowed a policy to finish virtually all computation
-            # yet stall the only task that can complete the DAG until the
-            # finite horizon expired.  Remote choices remain legal; local is
-            # retained as the delivery-safe fallback.
             defer_allowed = False
         masks.append(
             [

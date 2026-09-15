@@ -543,10 +543,6 @@ class UAMCOEnv:
                     else self.return_queues,
                     source,
                 )
-                # A high-fan-in DAG need not buffer every predecessor file at
-                # once.  Initial hops use the same bounded waiting mechanism
-                # as forwarded hops, so legality depends on whether each file
-                # can ever fit, not whether the whole fan-in fits right now.
                 if transfer_queue.max_bytes < maximum_item_bytes:
                     transfer_buffers_available = False
                     break
@@ -558,10 +554,6 @@ class UAMCOEnv:
                 and target_queue.remaining_bytes >= task.output_bytes
             )
             if proactive_sink:
-                # The causal path streams every direct predecessor result back
-                # while its remote computation finishes.  The aggregation
-                # sink waits until that real delivery has completed, then runs
-                # at the owner without duplicating in-flight transfers.
                 allowed = bool(
                     allowed
                     and executor == state.owner_ugv
@@ -914,9 +906,6 @@ class UAMCOEnv:
                 self._enqueue_compute(workflow_id, task_id, executor)
             else:
                 try:
-                    # Reserve finite compute-queue capacity before input transfer.
-                    # Otherwise several in-flight transfers can all observe one
-                    # free slot and overflow the queue when they finish together.
                     self._enqueue_compute(
                         workflow_id,
                         task_id,
