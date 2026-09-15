@@ -1,0 +1,35 @@
+MIT License
+
+Copyright (c) 2026 Qingbin Guo
+
+Corresponding Author: Qingbin Guo
+
+Contact Email: 15763668106@163.com.
+
+Affiliation: Yunnan University, School of Software
+
+Associated Paper: UADO: UAV-Assisted Delivery-Aware Orchestration for DAG Services under Intermittent Connectivity
+
+Additional Academic Terms:
+
+1. This software is primarily released for academic research. Commercial usage requires prior written authorization from the copyright holder.
+2. Any academic publication that modifies or utilizes all or part of this source code shall explicitly cite the aforementioned original paper.
+3. All distributed copies of this code, modified or unmodified, must retain this complete license statement and paper attribution information.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

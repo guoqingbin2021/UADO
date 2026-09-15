@@ -1,0 +1,29 @@
+# Python caches and environments
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# IDE and operating-system metadata
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local runtime and experiment artifacts
+.cache/
+.runtime/
+.env
+output/
+outputs/
+runs/
+wandb/
+checkpoints/
+tmp/
+*.log

@@ -1,0 +1,28 @@
+extends: base.yaml
+
+scenario:
+  ugv_count: 16
+  rsu_count: 4
+  uav_count: 3
+  workflow_trigger_distance_m: 1000000000.0
+
+timing:
+  micro_slot_s: 0.5
+  episode_s: 10.0
+
+training:
+  validation_episodes: 1
+  progress_micro_slot_interval: 25
+
+algorithm:
+  max_observation_nodes: 64
+  max_update_decisions: 64
+  ppo_epochs: 1
+  graphs_per_update: 16
+
+runtime:
+  gpu_ids: [0]
+  workers_per_gpu: 1
+  output_dir: output/formal
+  formal_output_dir: output/formal
+  smoke_output_dir: output/smoke

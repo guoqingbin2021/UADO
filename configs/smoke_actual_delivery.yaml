@@ -1,0 +1,12 @@
+micro_slot_s: 1.0
+episode_s: 200.0
+formal_episode_s: 300.0
+link_rate_bps: 32.0
+executor_cpu_hz: 10.0
+real_dag_cpu_hz: 1000000000000000.0
+max_steps: 20000
+time_resolution:
+  reference_micro_slot_s: 0.1
+  configured_micro_slot_s: 0.5
+  candidate_micro_slots_s: [0.25, 0.5, 1.0]
+  max_primary_metric_relative_error: 0.01

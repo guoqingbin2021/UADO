@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "frozen_on": "2026-07-20",
+  "methods": {
+    "MAPPO": {
+      "venue": "NeurIPS",
+      "year": 2022,
+      "url": "https://github.com/marlbenchmark/on-policy",
+      "commit": "de66d7a4b23fac2513f56f96f73b3f5cb96695ac",
+      "local_path": "third_party/on-policy",
+      "license": "MIT",
+      "redistribution_allowed": true,
+      "adaptation": {
+        "action": "ready_node_executor_selection",
+        "shared_allocator": "sla_edf_pf_v1",
+        "preserved_core": "parameter-shared actor, centralized value estimation, and simultaneous policy update",
+        "patch": "Official MAPPO modules are wrapped by the common padded ready-node observation and action mask."
+      }
+    },
+    "HAPPO": {
+      "venue": "ICLR",
+      "year": 2022,
+      "url": "https://github.com/PKU-MARL/HARL",
+      "commit": "b1af98b0dbab72a2eee9d160751cd09aedbb8ce2",
+      "local_path": "third_party/HARL",
+      "license": "MIT",
+      "redistribution_allowed": true,
+      "adaptation": {
+        "action": "ready_node_executor_selection",
+        "shared_allocator": "sla_edf_pf_v1",
+        "preserved_core": "heterogeneous actor groups and sequential policy update",
+        "patch": "Official HAPPO modules are wrapped by the common padded ready-node observation and action mask."
+      }
+    },
+    "AMCoEdge": {
+      "venue": "IEEE Transactions on Services Computing",
+      "year": 2025,
+      "doi": "10.1109/TSC.2025.3638764",
+      "url": "https://github.com/ChangfuXu/AMCoEdge",
+      "commit": "fd921f8e11f7b3ca1cf0b4a7baeffb45d0a7ffe6",
+      "local_path": "third_party/AMCoEdge",
+      "license": "NOT_DECLARED_IN_UPSTREAM_REPOSITORY",
+      "redistribution_allowed": false,
+      "source_sha256": {
+        "AdaDQN.py": "16360f87b27d510ac976180780d797a4d7a17a7809706ace95218abb384f708c",
+        "environment.py": "50bd8957b34b8382ba389358fe739b68366c38419b3cff4a8d73b8dafb93365a",
+        "main.py": "b08fb54e361674fc87e5637292e3e1c68bd98747902fdf38db4df3693556c4df"
+      },
+      "adaptation": {
+        "mode": "faithful_pytorch_port",
+        "action": "ready_node_executor_selection",
+        "shared_allocator": "sla_edf_pf_v1",
+        "preserved_core": "31 non-empty five-slot subsets, three 20-neuron hidden layers, replay memory, evaluation/target Q networks, target replacement, epsilon schedule, Bellman update, and CWA/HECWA workload allocation",
+        "patch": "Legal common executors are ranked into five collaboration slots. The full subset and allocation fractions are retained, while the largest-fraction executor runs the indivisible DAG node."
+      }
+    },
+    "FDEdge": {
+      "venue": "IEEE Transactions on Mobile Computing",
+      "year": 2025,
+      "doi": "10.1109/TMC.2025.3587744",
+      "url": "https://github.com/ChangfuXu/FDEdge",
+      "commit": "551988866f934b5cdb672e9122279a73eba60259",
+      "local_path": "third_party/FDEdge",
+      "license": "NOT_DECLARED_IN_UPSTREAM_REPOSITORY",
+      "redistribution_allowed": false,
+      "source_sha256": {
+        "fdedge_main.py": "40597c0c94d1a5679c6b94b5674a929207b34997777558305ddb56a35dac0b55",
+        "fdsac_model.py": "e47f4ed71134462ff3c91f475abdddbfed856e1a833a455696b0434214493d8d",
+        "feedback_diffusion.py": "1e350ae9987e2cb236a5727705b58b2ec4ceaecb24817895aea7657ff95fecc1"
+      },
+      "adaptation": {
+        "mode": "package_safe_core_port",
+        "action": "ready_node_executor_selection",
+        "shared_allocator": "sla_edf_pf_v1",
+        "preserved_core": "five-step VP feedback diffusion with sinusoidal time embedding and posterior sampling, discrete SAC, twin critics and targets, learned temperature, current/next latent replay, and soft target updates",
+        "patch": "The package-safe port adds the common hard action mask, real post-step next state and mask, terminal factor, and per-episode latent reset. It never uses PPO."
+      }
+    },
+    "MEC-UARA": {
+      "venue": "IEEE Transactions on Mobile Computing",
+      "year": 2024,
+      "doi": "10.1109/TMC.2024.3458185",
+      "url": "https://github.com/mwkim00/mec_uara",
+      "commit": "304a60a0a9db5d0a41242e150dca6e383b1c68c7",
+      "local_path": "third_party/MEC-UARA",
+      "license": "Apache-2.0",
+      "redistribution_allowed": true,
+      "source_sha256": {
+        "agent.py": "270d1c5f85c16db884dbbe8704fcaa5080d3b36e98f3484f8acd5abd64541b76",
+        "env.py": "ee39eb9b97278eae739fd93d76fd556ca03a419792b1cc0d8e5fdb455cb586b4",
+        "main.py": "eaa8c9705e2a4bd92103600f65b36ed67a8dde9ad5896b83d376087189c975e0"
+      },
+      "adaptation": {
+        "mode": "direct_primal_dual_port",
+        "action": "ready_node_executor_selection",
+        "shared_allocator": "sla_edf_pf_v1",
+        "preserved_core": "two projected nonnegative dual variables, association matrix, candidate-cost rule, and decaying dual learning rates",
+        "patch": "Common queue work, CPU, recovered SNR, link rate, task load, and real remaining mobile energy replace upstream objects; joules are converted to the upstream Wh unit and both duals advance every micro-slot. It performs no neural backward pass."
+      }
+    }
+  }
+}

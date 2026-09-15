@@ -1,0 +1,9 @@
+extends: ccfa_confirmatory.yaml
+
+# One-episode end-to-end implementation check only.  The registered full run
+# continues to use 20 evaluation episodes per condition.
+evaluation:
+  episodes_per_condition: 1
+
+runtime:
+  smoke_output_dir: output/smoke_ccfa_confirmatory

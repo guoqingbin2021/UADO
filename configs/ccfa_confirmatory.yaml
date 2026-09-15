@@ -1,0 +1,20 @@
+extends: formal_a40x4.yaml
+
+training:
+  seeds: [131, 149, 167, 181, 199, 223, 251]
+
+evaluation:
+  episodes_per_condition: 20
+
+runtime:
+  output_dir: output/ccfa_confirmatory
+  primary_output_dir: output/formal
+  resume: true
+
+confirmatory:
+  registered_seeds: [131, 149, 167, 181, 199, 223, 251]
+  episodes_per_job: 300
+  strongest_baseline_by_fold:
+    montage: HAPPO
+    seismology: MAPPO
+    cycles: AMCoEdge

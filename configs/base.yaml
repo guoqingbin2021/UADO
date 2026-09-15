@@ -1,0 +1,180 @@
+project:
+  name: UAMCO-DAG
+  title: "UAMCO-DAG: UAV-Assisted DAG Offloading for Intermittently Connected Vehicular Edge Computing"
+
+data:
+  workflow_source: wfcommons/WfInstances
+  workflow_manifest: data/manifests/workflows.json
+  workflow_families:
+    Montage: 17
+    Seismology: 11
+    Cycles: 24
+  reference_frequency_hz: 1000000000.0
+  mobility_primary: RELLIS-3D
+  mobility_zero_shot: M2DGR-Outdoor
+  mobility_manifest: data/manifests/mobility.json
+  pose_only: true
+
+calibration:
+  manifest: data/manifests/calibration.json
+  frozen_bounds: data/calibration/objective_bounds.json
+  update_during_training: false
+
+scenario:
+  width_m: 3000.0
+  height_m: 3000.0
+  ugv_count: 16
+  active_workflows_per_episode: 4
+  rsu_count: 4
+  uav_count: 3
+  rsu_radius_m: 500.0
+  uav_altitude_m: 150.0
+  uav_radius_m: 400.0
+  uav_max_speed_mps: 20.0
+  workflow_trigger_distance_m: 10.0
+  queue_capacity:
+    ugv_active_dags: 8
+    ugv_buffer_bytes: 1073741824
+    rsu_compute_items: 64
+    rsu_buffer_bytes: 8589934592
+    uav_compute_items: 32
+    uav_buffer_bytes: 4294967296
+
+timing:
+  micro_slot_s: 0.5
+  macro_interval_s: 10.0
+  episode_s: 300.0
+  calibration:
+    reference_micro_slot_s: 0.1
+    configured_micro_slot_s: 0.5
+    candidate_micro_slots_s: [0.25, 0.5, 1.0]
+    max_primary_metric_relative_error: 0.01
+
+experiments:
+  main_completion:
+    termination: fixed_horizon
+    active_workflows_per_episode: 2
+    stop_new_admissions: true
+    report_remaining: true
+    max_resource_utilization: 0.91
+    max_assignment_utilization: 0.80
+    minimum_rsu_contact_ratio: 0.05
+    maximum_rsu_contact_ratio: 0.20
+    deadline_source: max_critical_path_fair_share_communication
+    ttl_deadline_multiplier: 2.0
+  fixed_horizon_load:
+    termination: fixed_horizon
+    active_workflows_per_episode: 4
+    episode_s: 200.0
+    report_remaining: true
+
+resources:
+  executor_cpu_hz:
+    ugv: 2000000000.0
+    rsu: 12000000000.0
+    uav: 6000000000.0
+  link_rate_bps: 100000000.0
+  channel:
+    bandwidth_hz: 20000000.0
+    noise_interference_w: 1.0e-13
+    reference_gain: 1.0e-4
+    ground_pathloss_exponent: 3.0
+    air_pathloss_exponent: 2.2
+  radio_power_w:
+    ugv: 0.6
+    rsu: 1.0
+    uav: 0.8
+  compute_capacitance:
+    ugv: 1.0e-28
+    rsu: 0.8e-28
+    uav: 1.2e-28
+  mobile_energy_budget_j:
+    ugv: 20000.0
+    uav: 40000.0
+  mobile_energy_normalizer_j: 50000.0
+
+sla:
+  mix: [0.3333333333, 0.3333333333, 0.3333333334]
+  tiers:
+    gold: {deadline_multiplier: 1.5, miss_limit: 0.05, drop_limit: 0.01}
+    silver: {deadline_multiplier: 2.0, miss_limit: 0.10, drop_limit: 0.03}
+    bronze: {deadline_multiplier: 3.0, miss_limit: 0.20, drop_limit: 0.05}
+  ttl_deadline_multiplier: 2.0
+
+objective:
+  name: delivery_first_edp
+  interface_scalar: 0.5
+
+algorithm:
+  graph_hidden_dim: 128
+  graph_layers: 3
+  max_observation_nodes: 64
+  max_update_decisions: 1024
+  gamma: 1.0
+  gae_lambda: 0.95
+  clip_ratio: 0.2
+  actor_learning_rate: 0.0003
+  critic_learning_rate: 0.001
+  lagrange_learning_rate: 0.01
+  ppo_epochs: 4
+  ppo_epochs_by_method:
+    UAMCO-DAG: 4
+    MAPPO: 4
+    HAPPO: 1
+  graphs_per_update: 64
+  max_grad_norm: 0.5
+  entropy_coefficient: 0.01
+  value_coefficient: 0.5
+  cost_value_coefficient: 0.25
+  causal_executor_prior_scale: 1.0
+  causal_macro_prior_scale: 4.0
+
+training:
+  episodes: 100
+  main_method_episodes:
+    UAMCO-DAG: 300
+    MAPPO: 300
+    HAPPO: 300
+    AMCoEdge: 300
+    FDEdge: 300
+    MEC-UARA: 300
+  ablation_episodes: 300
+  workload_curriculum:
+    easy_fraction: 0.30
+    medium_fraction: 0.70
+  seeds: [11, 23, 37, 53, 71, 89, 107]
+  workflow_folds: [montage, seismology, cycles]
+  checkpoint_interval: 1
+  validation_interval: 20
+  progress_micro_slot_interval: 100
+  validation_episodes: 3
+  experiment_mode: main_completion
+
+evaluation:
+  primary_experiment_mode: main_completion
+  load_experiment_mode: fixed_horizon_load
+  primary_mobility: RELLIS-3D
+  zero_shot_mobility: M2DGR-Outdoor
+  episodes_per_condition: 1
+  sensitivity_episodes: 1
+  studies:
+    scalability_layouts:
+      - {ugv_count: 8, rsu_count: 2, uav_count: 2}
+      - {ugv_count: 16, rsu_count: 4, uav_count: 3}
+      - {ugv_count: 24, rsu_count: 6, uav_count: 5}
+      - {ugv_count: 32, rsu_count: 8, uav_count: 6}
+      - {ugv_count: 40, rsu_count: 10, uav_count: 8}
+    workflow_trigger_distance_m: [5.0, 10.0, 20.0, 40.0]
+    contact_forecast_error: [0.0, 0.1, 0.2, 0.3]
+    unavailable_uavs: [0, 1, 2]
+    deadline_multiplier_scale: [1.0, 0.75, 0.5]
+
+runtime:
+  gpu_ids: [0]
+  workers_per_gpu: 1
+  minimum_gpu_free_fraction: 0.15
+  resume: true
+  retry_count: 1
+  output_dir: output
+  formal_output_dir: output/formal
+  smoke_output_dir: output/smoke

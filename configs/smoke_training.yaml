@@ -1,0 +1,22 @@
+extends: base.yaml
+
+scenario:
+  ugv_count: 2
+  rsu_count: 1
+  uav_count: 1
+
+timing:
+  # Keep the publication horizon: the smallest validation DAG needs more than
+  # 170 s for assignment, computation, and final-result return.  Reducing the
+  # horizon makes the smoke protocol empty instead of making it cheaper.
+  episode_s: 300.0
+
+training:
+  validation_episodes: 1
+
+runtime:
+  gpu_ids: [0]
+  workers_per_gpu: 1
+  output_dir: output/smoke
+  formal_output_dir: output/formal
+  smoke_output_dir: output/smoke

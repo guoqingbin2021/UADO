@@ -1,0 +1,17 @@
+extends: base.yaml
+
+training:
+  experiment_mode: main_completion
+  validation_episodes: 1
+
+evaluation:
+  episodes_per_condition: 1
+  sensitivity_episodes: 1
+
+runtime:
+  gpu_ids: [0, 1, 2, 3]
+  workers_per_gpu: 1
+  smoke_workers_per_gpu: 2
+  output_dir: output/formal
+  formal_output_dir: output/formal
+  smoke_output_dir: output/smoke_causal_advantage
